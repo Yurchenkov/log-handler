@@ -14,10 +14,11 @@ class File
      * @param $path - путь к файлу с access_log'ом
      * @return Generator
      */
-    public static function readFile($path) {
+    public static function readFile(string $path): Generator
+    {
         $handle = fopen($path, "r");
 
-        while(!feof($handle)) {
+        while (!feof($handle)) {
             yield trim(fgets($handle));
         }
 

@@ -11,6 +11,9 @@ require_once ('./components/LogHandler.php');
 class App
 {
 
+    /**
+     * @return false|string - сводная информация по access_log в формате json
+     */
     public static function logInfo()
     {
         $handler = new LogHandler();

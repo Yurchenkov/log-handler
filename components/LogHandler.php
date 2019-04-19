@@ -34,9 +34,11 @@ class LogHandler
         foreach (File::readFile(File::$path) as $value){
             $logRecordInfo = Parser::accessLogRecordInfo($value,Parser::$patterns);
             $this->attributes['views']++;
+
             if(self::uniqueUrls($logRecordInfo['url'])){
                 $this->attributes['urls']++;
             }
+
             $this->attributes['traffic'] += $logRecordInfo['traffic'];
             $this->attributes['statusCodes'][$logRecordInfo['status_code']]++;
         }
@@ -48,11 +50,12 @@ class LogHandler
      * @param $url - Url, проверяемый на уникальность
      * @return bool
      */
-    private static function uniqueUrls($url)
+    private static function uniqueUrls(string $url):bool
     {
         if(in_array($url,self::$uniqueUrls)){
             return false;
         }
+
         self::$uniqueUrls[] = $url;
         return true;
     }
