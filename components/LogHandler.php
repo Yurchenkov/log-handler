@@ -18,7 +18,14 @@ class LogHandler
         'views' => 0,
         'urls' => 0,
         'traffic' => 0,
-        'statusCodes' => []
+        'lines' => 0,
+        'statusCodes' => [],
+        'crawlers' => [
+            'Google' => 0,
+            'Bing' => 0,
+            'Yandex' => 0,
+            'Baidu' => 0,
+        ]
     ];
 
     /**
@@ -29,7 +36,7 @@ class LogHandler
     /**
      * @return array - массив запрашиваемых параметров для вывода
      */
-    public function result()
+    public function result():array
     {
         foreach (File::readFile(File::$path) as $value){
             $logRecordInfo = Parser::accessLogRecordInfo($value,Parser::$patterns);
@@ -40,6 +47,10 @@ class LogHandler
             }
 
             $this->attributes['traffic'] += $logRecordInfo['traffic'];
+            $this->attributes['lines']++;
+            if(!empty($logRecordInfo['crawlers'])){
+                $this->attributes['crawlers'][$logRecordInfo['crawlers']]++;
+            }
             $this->attributes['statusCodes'][$logRecordInfo['status_code']]++;
         }
 
