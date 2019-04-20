@@ -17,8 +17,10 @@ class App
     public static function logInfo()
     {
         $handler = new LogHandler();
+
         $result = $handler->result();
         $jsonResult = json_encode($result);
+
         return $jsonResult;
     }
 

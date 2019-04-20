@@ -19,13 +19,13 @@ class LogHandler
         'urls' => 0,
         'traffic' => 0,
         'lines' => 0,
-        'statusCodes' => [],
         'crawlers' => [
             'Google' => 0,
             'Bing' => 0,
             'Yandex' => 0,
             'Baidu' => 0,
-        ]
+        ],
+        'statusCodes' => []
     ];
 
     /**
@@ -48,9 +48,11 @@ class LogHandler
 
             $this->attributes['traffic'] += $logRecordInfo['traffic'];
             $this->attributes['lines']++;
+
             if(!empty($logRecordInfo['crawlers'])){
                 $this->attributes['crawlers'][$logRecordInfo['crawlers']]++;
             }
+
             $this->attributes['statusCodes'][$logRecordInfo['status_code']]++;
         }
 
