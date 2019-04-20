@@ -13,9 +13,9 @@ class Parser
      */
     public static $patterns = [
         'url' => '/\S+[^"]+"[^"\[\]]+"\s\d+\s\d+\s+("[^"\[\]]+")/', //значения url(заключены в кавычки)
-        'ip' => '/(\S+)[^"]+"[^"\[\]]+"\s\d+\s\d+/', //значения не содержащие пробелов,IP-адреса,статусы ответа,размер
         'status_code' => '/\S+[^"]+"[^"\[\]]+"\s(\d+)\s\d+/', //значения кода ответа
-        'traffic' => '/\S+[^"]+"[^"\[\]]+"\s\d+\s(\d+)/' //объём траффика
+        'traffic' => '/\S+[^"]+"[^"\[\]]+"\s\d+\s(\d+)/', //объём траффика
+        'user_agent' => '/\S+[^"]+"[^"\[\]]+"\s\d+\s\d+\s+"[^"\[\]]+"+\s+("[^"\[\]]+")/' //user_agent, требуется для получения crawlers
     ];
 
     /**
@@ -32,6 +32,23 @@ class Parser
             $result[$key] = $matches[1];
         }
 
+        $result['crawlers'] = self::crawlers($result['user_agent']);
+
         return $result;
+    }
+
+    /**
+     * @param string $userAgent
+     * @return mixed
+     */
+    private static function crawlers(string $userAgent)
+    {
+        $interestingCrawlers = ['Google','Bing','Yandex','Baidu'];
+        foreach ($interestingCrawlers as $item){
+            $pattern = '/(' . $item .')/';
+            if(preg_match($pattern, $userAgent, $matches)){
+                return $item;
+            }
+        }
     }
 }
